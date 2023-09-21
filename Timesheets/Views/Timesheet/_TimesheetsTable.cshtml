@@ -3,8 +3,9 @@
 <table id="projectinfo">
     <tr>
         <th>Project Name</th>
-        <th>Hours</th>
+        <th>Total Hours</th>
         <th>Name</th>
+        <th>Hours Worked</th>
         <th>Date</th>
     </tr>
     @if (@Model != null)
@@ -14,14 +15,14 @@
             <tr>
                 <td>@projectInfo.Project</td>
                 <td>@projectInfo.TotalHours</td>
-                <td colspan="2"></td>
+                <td colspan="3"></td>
             </tr>
             @foreach (var workers in @projectInfo.Workers)
             {
                 <tr>
-                    <td></td>
-                    <td>@workers.HoursWorked</td>
+                    <td colspan="2"></td>
                     <td>@workers.Name</td>
+                    <td>@workers.HoursWorked</td>
                     <td>@workers.Date</td>
                 </tr>
             }
