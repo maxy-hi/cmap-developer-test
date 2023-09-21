@@ -1,5 +1,5 @@
-﻿using CsvHelper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using SoftCircuits.CsvParser;
 using System.Diagnostics;
 using System.Globalization;
 using Timesheets.Models;
@@ -43,29 +43,32 @@ namespace Timesheets.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public void GetCsv()
+        public IActionResult DownloadCsv()
         {
-            var file = @"F:\myOutput.csv";
-
-            using (var writer = new StreamWriter(file))
-            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            using (MemoryStream memoryStream = new MemoryStream())
+            using (var writer = new CsvWriter(memoryStream))
             {
                 var projectInfo = _timesheetService.GetProjectInfos();
-                var mapped = new List<object>();
+
+                writer.Write("Project", "Total Hours", "Name", "Date", "Hours Worked");
                 foreach (var project in projectInfo)
                 {
                     foreach (var worker in project.Workers)
                     {
-                        //turn the projectInfo into a flat object to then pass it to a CSV
-                        mapped.Add(new { project.Project, project.TotalHours, worker.Name, worker.Date, worker.HoursWorked });
+                        writer.Write($"{project.Project}, {project.TotalHours}, {worker.Name}, {worker.Date}, {worker.HoursWorked}");
                     }
                 }
-                csv.WriteRecords(mapped);
-                csv.Flush();
+
+                writer.Flush(); // This is important!
+
+                memoryStream.Seek(0, SeekOrigin.Begin);
+                FileContentResult result = new FileContentResult(memoryStream.GetBuffer(), "text/csv")
+                {
+                    FileDownloadName = "Filename.csv"
+                };
+
+                return result;
             }
-
-            //As this is in memory the info will get deleted after this as the page has to be directed to
         }
-
     }
 }
