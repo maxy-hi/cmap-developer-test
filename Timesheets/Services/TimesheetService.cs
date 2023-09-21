@@ -1,4 +1,5 @@
-﻿using Timesheets.Infrastructure;
+﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+using Timesheets.Infrastructure;
 using Timesheets.Models;
 using Timesheets.Repositories;
 
@@ -8,6 +9,7 @@ namespace Timesheets.Services
     {
         void Add(Timesheet timesheet);
         IList<Timesheet> GetAll();
+        IList<ProjectInfo> GetProjectInfos();
     }
 
     public class TimesheetService : ITimesheetService
@@ -28,6 +30,12 @@ namespace Timesheets.Services
         {
             var timesheets = _timesheetRepository.GetAllTimesheets();
             return timesheets;
+        }
+
+        public IList<ProjectInfo> GetProjectInfos()
+        {
+            var info = _timesheetRepository.GetProjectInfos();
+            return info;
         }
     }
 }

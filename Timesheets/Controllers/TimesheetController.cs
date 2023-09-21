@@ -30,7 +30,7 @@ namespace Timesheets.Controllers
 
             _timesheetService.Add(timesheet);
 
-            var timesheets = _timesheetService.GetAll();
+            ViewData["ProjectInfo"] = _timesheetService.GetProjectInfos();
 
             return View();
         }

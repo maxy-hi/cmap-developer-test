@@ -18,6 +18,8 @@ namespace Timesheets.Infrastructure
             options.UseInMemoryDatabase("TimesheetDB");
         }
 
+        //Added this as without it the reference for the timesheet entry is lost
+        public DbSet<TimesheetEntry> TimesheetEntrys { get; set; }
         public DbSet<Timesheet> Timesheets { get; set; }
     }
 }
