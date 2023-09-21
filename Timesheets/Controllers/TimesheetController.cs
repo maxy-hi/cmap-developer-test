@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CsvHelper;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Globalization;
 using Timesheets.Models;
 using Timesheets.Services;
 
@@ -40,5 +42,31 @@ namespace Timesheets.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public void GetCsv()
+        {
+            //NB: this should be changed the
+            var file = @"F:\myOutput.csv";
+
+            using (var writer = new StreamWriter(file))
+            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            {
+                var projectInfo = _timesheetService.GetProjectInfos();
+                var mapped = new List<object>();
+                foreach (var project in projectInfo)
+                {
+                    foreach (var worker in project.Workers)
+                    {
+                        //turn the projectInfo into a flat object to then pass it to a CSV
+                        mapped.Add(new { project.Project, project.TotalHours, worker.Name, worker.Date, worker.HoursWorked });
+                    }
+                }
+                csv.WriteRecords(mapped);
+                csv.Flush();
+            }
+
+            //As this is in memory the info will get deleted after this as the page has to be directed to
+        }
+
     }
 }
