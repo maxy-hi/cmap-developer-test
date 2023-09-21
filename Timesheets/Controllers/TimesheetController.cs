@@ -45,7 +45,6 @@ namespace Timesheets.Controllers
 
         public void GetCsv()
         {
-            //NB: this should be changed the
             var file = @"F:\myOutput.csv";
 
             using (var writer = new StreamWriter(file))
