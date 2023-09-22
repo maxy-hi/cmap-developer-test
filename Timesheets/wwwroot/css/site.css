@@ -16,3 +16,23 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+table#projectinfo {
+    border: 1px solid;
+}
+
+tr#projectinfoheader > th {
+    border: 1px solid;
+    padding: 2px 7px;
+}
+
+tr#projectinfoprimary > td {
+    border: 1px solid;
+    padding: 2px 7px;
+    background: rgb(220,220,220);
+}
+
+tr#projectinfosecondary > td {
+    border: 1px solid;
+    padding: 2px 7px;
+}

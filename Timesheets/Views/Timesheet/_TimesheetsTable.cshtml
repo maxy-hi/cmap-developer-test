@@ -1,7 +1,7 @@
 ﻿@model List<Timesheets.Models.ProjectInfo>
 
 <table id="projectinfo">
-    <tr>
+    <tr id="projectinfoheader">
         <th>Project Name</th>
         <th>Total Hours</th>
         <th>Name</th>
@@ -12,14 +12,14 @@
     {
         @foreach (var projectInfo in @Model)
         {
-            <tr>
+            <tr id="projectinfoprimary">
                 <td>@projectInfo.Project</td>
                 <td>@projectInfo.TotalHours</td>
                 <td colspan="3"></td>
             </tr>
             @foreach (var workers in @projectInfo.Workers)
             {
-                <tr>
+                <tr id="projectinfosecondary">
                     <td colspan="2"></td>
                     <td>@workers.Name</td>
                     <td>@workers.HoursWorked</td>
